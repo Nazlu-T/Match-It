@@ -49,20 +49,16 @@ public class PlatformManager : MonoBehaviour
             if (!platform.IsEmpty)
             {
                 int collectableId = platform.Collectable.CollectableDataSo.id;
+                if (!_platformsMap.TryAdd(collectableId, new List<Platform> { platform }))
+                {
+                    _platformsMap[collectableId].Add(platform);
+                }
                 if (!_collectableIdMap.TryAdd(collectableId, 1))
                 {
-                    if (!_collectableIdMap.TryAdd(collectableId, 1))
-                    {
-                        if (!_platformsMap.TryAdd(collectableId, new List<Platform> { platform }))
-                        {
-                            _platformsMap[collectableId].Add(platform);
-                        }
-                    }
                     _collectableIdMap[collectableId] += 1;
-
                     if (_collectableIdMap[collectableId] == 3)
                     {
-                        ReleasePlatforms(_platformsMap[collectableId]); 
+                        ReleasePlatforms(_platformsMap[collectableId]);
 
                     }
                 }
@@ -75,7 +71,7 @@ public class PlatformManager : MonoBehaviour
     {
         foreach (Platform platform in platforms)
         {
-            platform.ReleaseCollectable();
+            platform.Release();
 
         }
     }
