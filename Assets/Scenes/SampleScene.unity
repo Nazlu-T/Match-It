@@ -521,7 +521,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.54
+  m_Intensity: 1.12
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -697,7 +697,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4d0640d6c77aae345b3f366c388d8b6e, type: 2}
+  - {fileID: 2100000, guid: eca549d6b70b9d74990e80ec20c0dc64, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1619,7 +1619,6 @@ MonoBehaviour:
   - {fileID: 1594490372}
   - {fileID: 398482818}
   - {fileID: 1316662634}
-  onCollectableClickedListener: {fileID: 1633169836}
 --- !u!4 &1633169835
 Transform:
   m_ObjectHideFlags: 0
