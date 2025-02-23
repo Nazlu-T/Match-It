@@ -53,6 +53,7 @@ public class PlatformManager : MonoBehaviour
                 {
                     _platformsMap[collectableId].Add(platform);
                 }
+
                 if (!_collectableIdMap.TryAdd(collectableId, 1))
                 {
                     _collectableIdMap[collectableId] += 1;
