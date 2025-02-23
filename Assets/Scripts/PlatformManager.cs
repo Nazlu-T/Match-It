@@ -8,13 +8,11 @@ public class PlatformManager : MonoBehaviour
     [SerializeField] private List<Platform> platforms;
 
     private Dictionary<int, int> _collectableIdMap = new Dictionary<int, int>();
-    [SerializeField] private OnCollectableClickedListener onCollectableClickedListener;
-
-
+    private Dictionary<int, List<Platform>> _platformsMap = new Dictionary<int, List<Platform>>();
 
     private void OnEnable()
     {
-        //onCollectableClickedListener.Response += OnCollectableSelected;
+
         Collectable.OnCollectableClicked += OnCollectableSelected;
 
 
@@ -22,7 +20,7 @@ public class PlatformManager : MonoBehaviour
 
     private void OnDisable()
     {
-        //onCollectableClickedListener.Response -= OnCollectableSelected;
+
         Collectable.OnCollectableClicked -= OnCollectableSelected;
 
     }
@@ -35,37 +33,50 @@ public class PlatformManager : MonoBehaviour
             if (platform.IsEmpty)
             {
                 platform.SetCollectable(collectable);
-                CheckedPlatforms();
+                CheckPlatforms();
                 break;
             }
         }
     }
 
-    public void CheckedPlatforms()
+    public void CheckPlatforms()
     {
         _collectableIdMap.Clear();
+        _platformsMap.Clear();
 
         foreach (Platform platform in platforms)
         {
-            if (platform.IsEmpty)
-            {
-                if (_collectableIdMap.Count < 3)
-                {
-                    break;
-                }
-            }
-            else
+            if (!platform.IsEmpty)
             {
                 int collectableId = platform.Collectable.CollectableDataSo.id;
                 if (!_collectableIdMap.TryAdd(collectableId, 1))
                 {
+                    if (!_collectableIdMap.TryAdd(collectableId, 1))
+                    {
+                        if (!_platformsMap.TryAdd(collectableId, new List<Platform> { platform }))
+                        {
+                            _platformsMap[collectableId].Add(platform);
+                        }
+                    }
                     _collectableIdMap[collectableId] += 1;
+
                     if (_collectableIdMap[collectableId] == 3)
                     {
-                        Debug.Log(collectableId);
+                        ReleasePlatforms(_platformsMap[collectableId]); 
+
                     }
                 }
             }
+
+        }
+    }
+
+    private void ReleasePlatforms(List<Platform> platforms)
+    {
+        foreach (Platform platform in platforms)
+        {
+            platform.ReleaseCollectable();
+
         }
     }
 
