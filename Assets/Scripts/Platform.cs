@@ -2,10 +2,12 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using Unity.VisualScripting;
+using System.Collections.Generic;
 
 public class Platform : MonoBehaviour
 {
     public bool IsEmpty {get; private set; } = true;
+    public Transform PlaceHolder=> placeHolder;
     public Collectable Collectable => _collectable;
     [SerializeField] private Transform placeHolder;
     private Collectable _collectable;
@@ -14,19 +16,29 @@ public class Platform : MonoBehaviour
     {
         IsEmpty= false;
         _collectable = collectable;
-        collectable.transform.DOJump(placeHolder.position, collectable.JumpForce, 1, 1)   
-            .OnComplete(collectable.OnReachPlatform);
+        _collectable.SetPlatform(this);
+        _collectable.OnReleased+= OnCollectableReleased;
     }
 
-    public void ReleaseCollectable()
+    public void Release(List<Platform>platforms)
     {
         if(IsEmpty)
         {
             return;
         }
-        _collectable.Release();
+        List<Collectable> collectables = new List<Collectable>();
+        foreach(Platform platform in platforms)
+        {
+            collectables.Add(platform.Collectable);
+        }
+        _collectable.Release( collectables);
         IsEmpty=true;
-        _collectable=null;
+     
+    }
+    private void OnCollectableReleased()
+    {
+        Debug.Log("OnCollectable Released");
+
     }
 
    

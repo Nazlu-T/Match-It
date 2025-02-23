@@ -72,7 +72,7 @@ public class PlatformManager : MonoBehaviour
     {
         foreach (Platform platform in platforms)
         {
-            platform.Release();
+            platform.Release(platforms);
 
         }
     }
