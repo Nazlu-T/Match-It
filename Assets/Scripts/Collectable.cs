@@ -28,11 +28,12 @@ public class Collectable : MonoBehaviour
         {
             OnCollectableClicked.Invoke(this);
         }
-        
+
     }
     public void Release()
     {
-        
+        Destroy(gameObject);
+
     }
 
     public void OnReachPlatform()
